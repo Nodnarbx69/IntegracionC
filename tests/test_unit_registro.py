@@ -1,26 +1,37 @@
-# test unitario de registro y búsqueda de contactos
+import pytest
+from src.registro import validar_nombre, validar_telefono, agregar_contacto, buscar_contacto, contactos
 
-from src.registro import registrar_contacto, buscar_contacto, contactos
+def test_validar_nombre_valido():
+    assert validar_nombre("Juan Perez") is True
 
-def test_registrar_contacto_valido():
-    resultado = registrar_contacto("Juan", "1234567891")
-    assert resultado == "Contacto Juan registrado correctamente."
-    assert "Juan" in contactos
-    assert contactos["Juan"] == "1234567891"
+def test_validar_nombre_invalido():
+    assert validar_nombre("Juan123") is False
+    assert validar_nombre("") is False
 
-def test_registrar_contacto_nombre_vacio():
-    resultado = registrar_contacto("", "123456789")
-    assert resultado == "Error: El nombre no puede estar vacío."
+def test_validar_telefono_valido():
+    assert validar_telefono("0987654321") is True
 
-def test_registrar_contacto_numero_invalido():
-    resultado = registrar_contacto("Ana", "12a45")
-    assert resultado == "Error: Número inválido."
+def test_validar_telefono_invalido():
+    assert validar_telefono("12345") is False
+    assert validar_telefono("123456789a") is False
+
+def test_agregar_contacto_valido():
+    contactos.clear()
+    assert agregar_contacto("Ana", "0987654321") is True
+    assert contactos["Ana"] == "0987654321"
+
+def test_agregar_contacto_nombre_invalido():
+    with pytest.raises(ValueError, match="El nombre solo debe contener letras y espacios."):
+        agregar_contacto("Ana123", "0987654321")
+
+def test_agregar_contacto_telefono_invalido():
+    with pytest.raises(ValueError, match="El número debe contener exactamente 10 dígitos."):
+        agregar_contacto("Pedro", "12345")
 
 def test_buscar_contacto_existente():
-    registrar_contacto("Pedro", "1234567891")
-    resultado = buscar_contacto("Pedro")
-    assert resultado == "Pedro: 1234567891"
+    contactos.clear()
+    agregar_contacto("Luis", "0987654321")
+    assert buscar_contacto("Luis") == "0987654321"
 
 def test_buscar_contacto_inexistente():
-    resultado = buscar_contacto("Maria")
-    assert resultado == "Error: Contacto no encontrado."
+    assert buscar_contacto("Carlos") is None
