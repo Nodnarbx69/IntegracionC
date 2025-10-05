@@ -4,16 +4,8 @@ from src.registro import validar_nombre, validar_telefono, agregar_contacto, bus
 def test_validar_nombre_valido():
     assert validar_nombre("Juan Perez") is True
 
-""" def test_validar_nombre_invalido():
-    assert validar_nombre("Juan123") is False
-    assert validar_nombre("") is False """
-
 def test_validar_telefono_valido():
     assert validar_telefono("0987654321") is True
-""" 
-def test_validar_telefono_invalido():
-    assert validar_telefono("12345") is False
-    assert validar_telefono("123456789a") is False """
 
 def test_agregar_contacto_valido():
     contactos.clear()
@@ -33,7 +25,3 @@ def test_buscar_contacto_existente():
     agregar_contacto("Luis", "0987654321")
     agregar_contacto("Julio", "0968133795")
     assert buscar_contacto("Luis") == "0987654321"
-
-""" def test_buscar_contacto_inexistente():
-    assert buscar_contacto("Carlos") is None
- """
